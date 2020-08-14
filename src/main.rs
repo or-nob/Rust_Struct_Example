@@ -1,4 +1,4 @@
-//Structs
+//have copy trait to be treated as a type
 struct User{
     username: String,
     email: String,
@@ -6,6 +6,11 @@ struct User{
     active: bool
 }
 
+#[derive(Debug)]
+struct Rect{
+    width: u32,
+    height: u32
+}
 //New types
 struct Coord(i16, i16, i16);
 
@@ -44,6 +49,53 @@ fn main() {
     let new_coord = Coord(1, 2, 3);
 
     println!("{} {} {}", new_coord.0, new_coord.1, new_coord.2);
+
+    //area calculation
+
+    let width: u32 = 5;
+    let height: u32 = 9;
+    let area = area_calc(width, height);
+
+    println!("{}", area);
+
+    //doing it with tuple
+
+    let dimensions = (9, 5);
+    let area_tuple = area_calc_tuple(dimensions);
+    println!("{}", area_tuple);
+
+    // We don't want to loose ownership
+    let rectangle = Rect{
+        height:5,
+        width:10
+    };
+
+    println!("{:#?}", rectangle);
+
+    let area = area_calc_struct(&rectangle);
+
+    println!("{} {}", area, rectangle.height);
+
+    let a: u32 = 8;
+    
+    ret(a);
+
+    println!("{}", a);
+}
+
+fn ret(idx: u32) {
+    let new_idx = idx;
+    println!("{}", new_idx);
+}
+
+fn area_calc_struct(dim: &Rect)->u32{
+    dim.height*dim.width
+}
+
+//tuple area calculation
+
+fn area_calc_tuple(dim: (u32, u32)) -> u32{
+    dim.0*dim.1
 }
 
 
@@ -56,4 +108,9 @@ fn build_usr(usr_name: String, email: String)->User {
     };
 
     new_usr
+}
+
+
+fn area_calc(width: u32, height: u32)->u32 {
+    width*height
 }
