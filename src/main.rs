@@ -6,11 +6,36 @@ struct User{
     active: bool
 }
 
+// without copy trait without referencing an object,
+// it will loose it's ownership as it's moved
 #[derive(Debug)]
 struct Rect{
     width: u32,
     height: u32
 }
+
+//Method
+impl Rect{
+    // same as function better to borrow with reference
+    // otherwise will loose ownership
+    fn area(&self)->u32 {
+        self.width*self.height
+    }
+
+    fn can_hold(&self, other: &Rect)->bool {
+        self.width>other.width && self.height>other.height
+    }
+
+    // associated functions which are used sometimes to create constructors 
+    fn square(size: u32) -> Rect{
+        Rect {
+            width:size,
+            height:size
+        }
+    }
+}
+
+
 //New types
 struct Coord(i16, i16, i16);
 
@@ -72,6 +97,8 @@ fn main() {
 
     println!("{:#?}", rectangle);
 
+    println!("{}", rectangle.area());
+
     let area = area_calc_struct(&rectangle);
 
     println!("{} {}", area, rectangle.height);
@@ -81,6 +108,29 @@ fn main() {
     ret(a);
 
     println!("{}", a);
+
+
+
+    let rect1 = Rect {
+        width: 30,
+        height: 50,
+    };
+    let rect2 = Rect {
+        width: 10,
+        height: 40,
+    };
+    let rect3 = Rect {
+        width: 60,
+        height: 45,
+    };
+
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+
+    let sq = Rect::square(5);
+
+    println!("{:#?}", sq);
+
 }
 
 fn ret(idx: u32) {
